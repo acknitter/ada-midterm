@@ -1,0 +1,60 @@
+---
+title: "midterm_AK"
+author: "Alex Knitter"
+date: '2022-10-20'
+output: html_document
+---
+
+```{r load-packages}
+# load necessary packages
+pacman::p_load(readr, tidyverse)
+```
+
+
+## a) importing the dataset
+
+```{r load-data}
+# import the dataset from github
+titanic <- read_csv('https://raw.githubusercontent.com/kijohnson/Data/main/titanic.csv')
+```
+
+
+## b) determining the median age for by passenger class
+
+```{r}
+# get summary of age by passenger class (includes median and other descriptive stats)
+by(titanic$Age, titanic$Pclass, summary)
+```
+
+**Passenger Class 1 Median Age:** 38.5 years
+
+**Passenger Class 2 Median Age:** 29.0 years
+
+**Passenger Class 3 Median Age:** 24.0 years
+
+
+## c) a plot that shows medians, spread of data, and outliers for the continuous variable age according to passenger class
+
+```{r}
+# Recode Pclass to factor variable for plotting by class
+titanic <- titanic %>%
+  mutate(Pclass = recode_factor(Pclass,
+                                "1" = "Class 1",
+                                "2" = "Class 2",
+                                "3" = "Class 3"))
+
+# Chose boxplots to show medians, spread (quartiles), and outliers
+# Generate boxplot of Age by Passenger Class
+ggplot(data = titanic, aes(x = Pclass, y = Age)) +
+  geom_boxplot() +
+  # add labels for axes, title, and caption
+  labs(x = "Passenger Class", 
+       y = "Age",  
+       title = "Age of Titanic Passengers by Class", 
+       caption="Titanic data, Github.com/kijohnson")
+
+# Export the above plot as an image for Midterm Question 3
+ggsave(filename = "Q3_Boxplot.png",
+       width = 4, height = 4, units = "in", bg="white")
+```
+
