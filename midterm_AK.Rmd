@@ -58,3 +58,18 @@ ggsave(filename = "Q3_Boxplot.png",
        width = 4, height = 4, units = "in", bg="white")
 ```
 
+
+## QUESTION 4 b. Next, add code to determine the percentage of males and females by class. Save this new version and push the new version to your Github repository.
+
+```{r}
+# creating table of % of each sex within each class
+titanic %>%
+  # group by the relevant variables, passenger class and sex
+  group_by(Pclass, Sex) %>%
+  # get count of each sex within each class
+  summarise(n = n()) %>%
+  # Calculate percents from counts
+  # ie num of female passengers in Class 1 div by total passengers in Class 1
+  mutate(Percent = n/sum(n)*100)
+```
+
